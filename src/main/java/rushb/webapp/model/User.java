@@ -10,5 +10,13 @@ public class User {
     private String email;
     private String password;
     private List<Article> articleList;
-    private int id;
+    private long id;
+
+    public void deleteArticle(Article article){
+        articleList.remove(article);
+    }
+
+    public void addArticle(Article article){
+        articleList.add(article);
+    }
 }

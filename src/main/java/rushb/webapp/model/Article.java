@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class Article {
-    private int id;
+    private long id;
     private String name;
     private Date createDate;
     private Date modifyDate;
