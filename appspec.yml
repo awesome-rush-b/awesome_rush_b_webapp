@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 
 files:
-  - source: ./springbootCode/target/demo-0.0.1-SNAPSHOT.jar
+  - source: ./target/demo-0.0.1-SNAPSHOT.jar
     destination: /home/ubuntu/springbootCode
 
 hooks:
