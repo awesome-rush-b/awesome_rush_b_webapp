@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
         DataSourceTransactionManagerAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class
 })
+//@SpringBootApplication
 public class WebappApplication {
 
     public static void main(String[] args) {

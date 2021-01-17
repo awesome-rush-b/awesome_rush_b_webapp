@@ -1,5 +1,6 @@
 package rushb.webapp.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import rushb.webapp.service.ArticleService;
 
 import java.util.List;
 
+@Api(tags = "Article related")
 @RestController
 public class ArticleController {
 
