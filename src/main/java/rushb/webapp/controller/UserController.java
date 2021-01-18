@@ -3,7 +3,6 @@ package rushb.webapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rushb.webapp.model.Blog;
 import rushb.webapp.model.User;
 import rushb.webapp.service.UserService;
 
@@ -20,13 +19,13 @@ public class UserController {
     }
 
     @PutMapping("api/user/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable long id){
-        //todo interaction with dao/mapper to do the actual change
+    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody User user){
+        userService.updateUser(user);
         return ResponseEntity.ok().body("Username has been changed successfully");
     }
 
     @GetMapping("api/user/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
+    public ResponseEntity<User> findById(@PathVariable String id){
         User user = userService.findById(id);
         return ResponseEntity.ok().body(user);
     }
@@ -37,11 +36,30 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
-    @GetMapping("api/user/articles")
-    public ResponseEntity<List<Blog>> listArticles(){
-        List<Blog> blogList = userService.getAllArticle();
-        return ResponseEntity.ok().body(blogList);
+    @GetMapping("api/users")
+    public ResponseEntity<List<User>> list(){
+        return ResponseEntity.ok().body(userService.list());
     }
+
+    /////////////////////// TESTING ONLY BBBBBAAAAAADDDDD PRACTICE //////////////////////////
+    @DeleteMapping("api/user/{id}")
+    public ResponseEntity<?> delete(@PathVariable String id){
+        userService.delete(id);
+        return ResponseEntity.ok().body("user "+id+" has been deleted");
+    }
+
+    @PostMapping("api/user")
+    public ResponseEntity<?> save(@RequestBody User user){
+        userService.save(user);
+        return ResponseEntity.ok().body("user "+user.getUserId()+" has been created");
+    }
+
+//
+//    @GetMapping("api/user/articles")
+//    public ResponseEntity<List<Blog>> listArticles(){
+//        List<Blog> blogList = userService.getAllArticle();
+//        return ResponseEntity.ok().body(blogList);
+//    }
 
 
 

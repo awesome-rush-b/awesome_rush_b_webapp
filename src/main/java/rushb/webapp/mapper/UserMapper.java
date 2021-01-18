@@ -20,7 +20,7 @@ public interface UserMapper {
      * @param id the id of the user to be found
      * @return the target user
      */
-    @Select("select from user where userId = #{id}")
+    @Select("select * from user where userId = #{id}")
     User findById(String id);
 
     /**
@@ -28,7 +28,7 @@ public interface UserMapper {
      * @param name  the username of the user to be found
      * @return  the target user
      */
-    @Select("select from user where username = #{name}")
+    @Select("select * from user where username = #{name}")
     User findByName(String name);
 
     /**
@@ -36,7 +36,7 @@ public interface UserMapper {
      * @param email the email of the user to be found
      * @return  the target user
      */
-    @Select("select from user where email = #{email}")
+    @Select("select * from user where email = #{email}")
     User findByEmail(String email);
 
     /**

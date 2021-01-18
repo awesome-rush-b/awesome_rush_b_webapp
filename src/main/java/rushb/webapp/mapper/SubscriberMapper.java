@@ -28,7 +28,7 @@ public interface SubscriberMapper {
      * @param name  the name of the subscriber to be found
      * @return  the target subscriber to be found
      */
-    @Select("select from subscriber where name = #{name}")
+    @Select("select * from subscriber where name = #{name}")
     Subscriber findByName(String name);
 
     /**
@@ -36,7 +36,7 @@ public interface SubscriberMapper {
      * @param subscriberId  the id of the subscriber to be found
      * @return  the target subscriber to be found
      */
-    @Select("select from subscriber where subscriberId = #{subscriberId}")
+    @Select("select * from subscriber where subscriberId = #{subscriberId}")
     Subscriber findById(String subscriberId);
 
     /**
@@ -44,7 +44,7 @@ public interface SubscriberMapper {
      * @param email the email of the subscriber to be found
      * @return  the target subscriber to be found
      */
-    @Select("select from subscriber where email = #{email}")
+    @Select("select * from subscriber where email = #{email}")
     Subscriber findByEmail(String email);
 
     /**
