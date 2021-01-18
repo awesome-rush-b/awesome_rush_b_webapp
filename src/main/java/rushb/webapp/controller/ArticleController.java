@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rushb.webapp.model.Article;
+import rushb.webapp.model.Blog;
 import rushb.webapp.service.ArticleService;
 
 import java.util.List;
@@ -21,39 +21,39 @@ public class ArticleController {
     }
 
     @GetMapping("api/articles")
-    public ResponseEntity<List<Article>> listArticles(){
-        List<Article> articleList = articleService.list();
-        return ResponseEntity.ok().body(articleList);
+    public ResponseEntity<List<Blog>> listArticles(){
+        List<Blog> blogList = articleService.list();
+        return ResponseEntity.ok().body(blogList);
     }
 
     @GetMapping("api/articles")
-    public ResponseEntity<List<Article>> listByAuthorName(String name){
-        List<Article> articleList = articleService.listByAuthorName(name);
-        return ResponseEntity.ok().body(articleList);
+    public ResponseEntity<List<Blog>> listByAuthorName(String name){
+        List<Blog> blogList = articleService.listByAuthorName(name);
+        return ResponseEntity.ok().body(blogList);
     }
 
     @GetMapping("api/articles")
-    public ResponseEntity<List<Article>> listByAuthorId(@RequestParam(name = "id") Long authorId){
-        List<Article> articleList = articleService.listByAuthorId(authorId);
-        return ResponseEntity.ok().body(articleList);
+    public ResponseEntity<List<Blog>> listByAuthorId(@RequestParam(name = "id") Long authorId){
+        List<Blog> blogList = articleService.listByAuthorId(authorId);
+        return ResponseEntity.ok().body(blogList);
     }
 
     @GetMapping("api/articles")
-    public ResponseEntity<List<Article>> listByTag(@RequestParam(name = "tag") String tag){
-        List<Article> articleList = articleService.listByTag(tag);
-        return ResponseEntity.ok().body(articleList);
+    public ResponseEntity<List<Blog>> listByTag(@RequestParam(name = "tag") String tag){
+        List<Blog> blogList = articleService.listByTag(tag);
+        return ResponseEntity.ok().body(blogList);
     }
 
     @GetMapping("api/article/{id}")
-    public ResponseEntity<Article> findById(@PathVariable Long id){
-        Article article = articleService.findById(id);
-        return ResponseEntity.ok().body(article);
+    public ResponseEntity<Blog> findById(@PathVariable Long id){
+        Blog blog = articleService.findById(id);
+        return ResponseEntity.ok().body(blog);
     }
 
     @GetMapping("api/article")
-    public ResponseEntity<Article> findByName(@RequestParam(name = "name") String name){
-        Article article = articleService.findByName(name);
-        return ResponseEntity.ok().body(article);
+    public ResponseEntity<Blog> findByName(@RequestParam(name = "name") String name){
+        Blog blog = articleService.findByName(name);
+        return ResponseEntity.ok().body(blog);
     }
 
     @DeleteMapping("api/article/{id}")
@@ -69,9 +69,9 @@ public class ArticleController {
     }
 
     @PostMapping("api/article")
-    public ResponseEntity<?> save(@RequestBody Article article){
-        articleService.save(article);
-        return ResponseEntity.ok().body("Article " + article.getId() + " has been successful updated");
+    public ResponseEntity<?> save(@RequestBody Blog blog){
+        articleService.save(blog);
+        return ResponseEntity.ok().body("Article " + blog.getBlogId() + " has been successful updated");
     }
 
 

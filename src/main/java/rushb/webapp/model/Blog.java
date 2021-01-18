@@ -6,12 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class Article {
-    private long id;
-    private String name;
+public class Blog {
+    private String blogId;
+    private String title;
     private Date createDate;
     private Date modifyDate;
     private List<String> HashTag;
     private String status;
-    private String author;
+    private String authorId;
+    private String content;
 }

@@ -3,7 +3,7 @@ package rushb.webapp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rushb.webapp.model.Article;
+import rushb.webapp.model.Blog;
 import rushb.webapp.model.User;
 import rushb.webapp.service.UserService;
 
@@ -38,9 +38,9 @@ public class UserController {
     }
 
     @GetMapping("api/user/articles")
-    public ResponseEntity<List<Article>> listArticles(){
-        List<Article> articleList = userService.getAllArticle();
-        return ResponseEntity.ok().body(articleList);
+    public ResponseEntity<List<Blog>> listArticles(){
+        List<Blog> blogList = userService.getAllArticle();
+        return ResponseEntity.ok().body(blogList);
     }
 
 
