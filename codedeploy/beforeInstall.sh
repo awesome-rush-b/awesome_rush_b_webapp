@@ -4,10 +4,10 @@ echo "******************Kill thread installed before******************"
 sudo pkill -9 java
 
 echo "******************Remove all previous files******************"
-if  [ ! -d  "/home/ubuntu/avsapp/"  ]; then
-echo  "No avsapp"
+if  [ ! -d  "/home/ubuntu/springbootCode/"  ]; then
+echo  "No springbootCode"
 else
-sudo rm  -rf  /home/ubuntu/avsapp
+sudo rm  -rf  /home/ubuntu/springbootCode
 fi
 
 # if  [ ! -f  "/home/ubuntu/application.properties"  ]; then
