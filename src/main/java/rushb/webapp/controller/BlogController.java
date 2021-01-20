@@ -1,73 +1,95 @@
 package rushb.webapp.controller;
 
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import rushb.webapp.model.Blog;
+import rushb.webapp.model.Tag;
+import rushb.webapp.service.BlogService;
 
-@Api(tags = "Article related")
+import java.util.List;
+
+@Api(tags = "Blog related. \n Frontend is responsible for the Tag.Count increment!!")
 @RestController
 public class BlogController {
 
-//    ArticleService articleService;
-//
-//    @Autowired
-//    public ArticleController(ArticleService articleService) {
-//        this.articleService = articleService;
-//    }
-//
-//    @GetMapping("api/articles")
-//    public ResponseEntity<List<Blog>> listArticles(){
-//        List<Blog> blogList = articleService.list();
-//        return ResponseEntity.ok().body(blogList);
-//    }
-//
-//    @GetMapping("api/articles")
-//    public ResponseEntity<List<Blog>> listByAuthorName(String name){
-//        List<Blog> blogList = articleService.listByAuthorName(name);
-//        return ResponseEntity.ok().body(blogList);
-//    }
-//
-//    @GetMapping("api/articles")
-//    public ResponseEntity<List<Blog>> listByAuthorId(@RequestParam(name = "id") String authorId){
-//        List<Blog> blogList = articleService.listByAuthorId(authorId);
-//        return ResponseEntity.ok().body(blogList);
-//    }
-//
-//    @GetMapping("api/articles")
-//    public ResponseEntity<List<Blog>> listByTag(@RequestParam(name = "tag") String tag){
-//        List<Blog> blogList = articleService.listByTag(tag);
-//        return ResponseEntity.ok().body(blogList);
-//    }
-//
-//    @GetMapping("api/article/{id}")
-//    public ResponseEntity<Blog> findById(@PathVariable String id){
-//        Blog blog = articleService.findById(id);
-//        return ResponseEntity.ok().body(blog);
-//    }
-//
-//    @GetMapping("api/article")
-//    public ResponseEntity<Blog> findByName(@RequestParam(name = "name") String name){
-//        Blog blog = articleService.findByName(name);
-//        return ResponseEntity.ok().body(blog);
-//    }
-//
-//    @DeleteMapping("api/article/{id}")
-//    public ResponseEntity<?> deleteArticle(@PathVariable String id){
-//        articleService.deleteArticle(id);
-//        return ResponseEntity.ok().body("Article " + id + " has been successful deleted");
-//    }
-//
-//    @PutMapping("api/article/{id}")
-//    public ResponseEntity<?> updateArticle(@PathVariable String id, @RequestBody Blog blog){
-//        articleService.updateArticle(id);
-//        return ResponseEntity.ok().body("Article " + id + " has been successful updated");
-//    }
-//
-//    @PostMapping("api/article")
-//    public ResponseEntity<?> save(@RequestBody Blog blog){
-//        articleService.save(blog);
-//        return ResponseEntity.ok().body("Article " + blog.getBlogId() + " has been successful updated");
-//    }
+    BlogService blogService;
 
+    @Autowired
+    public BlogController(BlogService blogService) {
+        this.blogService = blogService;
+    }
+
+    @ApiOperation("list all of the blogs from database")
+    @GetMapping("api/blogs")
+    public ResponseEntity<List<Blog>> list(){
+        return ResponseEntity.ok().body(blogService.list());
+    }
+
+    @ApiOperation("list all of the blogs from database created by the same author")
+    @GetMapping("api/blogs")
+    public ResponseEntity<List<Blog>> listByAuthorId(@RequestParam(value = "authorId") String authorId){
+        return ResponseEntity.ok().body(blogService.listByAuthorId(authorId));
+    }
+
+    @ApiOperation("list all of the blogs from database created by the same author")
+    @GetMapping("api/blogs")
+    public ResponseEntity<List<Blog>> listByAuthorName(@RequestParam(value = "authorName") String authorName){
+        return ResponseEntity.ok().body(blogService.listByAuthorName(authorName));
+    }
+
+    @ApiOperation("list all of the blogs from database attached with the same target tag")
+    @GetMapping("api/blogs")
+    public ResponseEntity<List<Blog>> listByTag(@RequestParam(value = "tag") String tagName){
+        return ResponseEntity.ok().body(blogService.listByTag(tagName));
+    }
+
+    @ApiOperation("find blog by Id")
+    @GetMapping("api/blog/{id}")
+    public ResponseEntity<Blog> findById(@PathVariable String id){
+        return ResponseEntity.ok().body(blogService.findById(id));
+    }
+
+    @ApiOperation("find blog by title")
+    @GetMapping("api/blog")
+    public ResponseEntity<Blog> findByTitle(@RequestParam(value = "title") String title){
+        return ResponseEntity.ok().body(blogService.findByTitle(title));
+    }
+
+    @ApiOperation("list all top ' number ' of most used tags from database")
+    @GetMapping("api/tags")
+    public ResponseEntity<List<Tag>> mostNPopular(@RequestParam(value = "number") Integer num){
+        return ResponseEntity.ok().body(blogService.mostNPopular(num));
+    }
+
+    @ApiOperation("list all of the tags from database")
+    @GetMapping("api/tags")
+    public ResponseEntity<List<Tag>> listTags(){
+        return ResponseEntity.ok().body(blogService.listTags());
+    }
+
+    @ApiOperation("update the target blog")
+    @PutMapping("api/blog/{id}")
+    public ResponseEntity<?> updateBlog(@PathVariable String id, @RequestBody Blog blog){
+        blogService.updateBlog(blog);
+        return ResponseEntity.ok().body("Blog "+id+" has been updated");
+    }
+
+    @ApiOperation("Create a blog")
+    @PostMapping("api/blog")
+    public ResponseEntity<?> saveBlog(@RequestBody Blog blog){
+        blogService.save(blog);
+        return ResponseEntity.ok().body("Blog "+blog.getBlogId()+" has been created");
+    }
+
+    @ApiOperation("delete a blog")
+    @DeleteMapping("api/blog/{id}")
+    public ResponseEntity<?> deleteBlog(@PathVariable String id){
+        blogService.delete(id);
+        return ResponseEntity.ok().body("Blog "+id+" has been deleted");
+    }
 
 
 }

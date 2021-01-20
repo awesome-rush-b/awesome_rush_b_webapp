@@ -45,13 +45,18 @@ public class TagDaoImpl implements TagDao{
 
     @Override
     public void updateTag(Tag tag) {
-        tagMapper.update(tag);
-        for(Tag temp : tags){
-            if(temp.getTagId().equals(tag.getTagId())){
-                temp.setCount(tag.getCount());
-                temp.setName(tag.getName());
+        if(tag.getCount() == 0)
+            tagMapper.delete(tag.getTagId());
+        else{
+            tagMapper.update(tag);
+            for(Tag temp : tags){
+                if(temp.getTagId().equals(tag.getTagId())){
+                    temp.setCount(tag.getCount());
+                    temp.setName(tag.getName());
+                }
             }
         }
+
     }
 
     @Override
@@ -68,11 +73,18 @@ public class TagDaoImpl implements TagDao{
 
     @Override
     public List<Tag> mostNPopular(int n) {
-        return null;
+        List<Tag> tagList= new ArrayList<>();
+        Iterator<Tag> iterator = tags.descendingIterator();
+        while(iterator.hasNext() && n>0){
+            tagList.add(iterator.next());
+        }
+        return tagList;
     }
 
-    public void update(){
-        while(tags.size() > 0 && tags.first().getCount() == 0)
-            this.delete(tags.pollFirst().getTagId());
+    @Override
+    public void detachTag(Tag tag) {
+        Tag oldTag = tagMapper.findById(tag.getTagId());
+        oldTag.setCount(oldTag.getCount()-1);
+        this.updateTag(oldTag);
     }
 }

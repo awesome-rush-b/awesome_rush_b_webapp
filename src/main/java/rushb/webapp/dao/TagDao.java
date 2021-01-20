@@ -20,4 +20,6 @@ public interface TagDao {
     void delete(String tagId);
 
     List<Tag> mostNPopular(int n);
+
+    void detachTag(Tag tag);
 }

@@ -96,12 +96,10 @@ public class BlogDaoImpl implements BlogDao{
 
     @Override
     public void updateBlog(Blog blog) {
-        Blog oldBlog = blogMapper.findById(blog.getBlogId());
-        if(!blog.getHashTag().equals(oldBlog.getHashTag())){
-            blogTagMapper.deleteBlog(blog.getBlogId());
-            for(Tag tag : blog.getHashTag()){
-                blogTagMapper.save(blog.getBlogId(), tag.getTagId());
-            }
+
+        blogTagMapper.deleteBlog(blog.getBlogId());
+        for(Tag tag : blog.getHashTag()){
+            blogTagMapper.save(blog.getBlogId(), tag.getTagId());
         }
         blogMapper.updateBlog(blog);
     }

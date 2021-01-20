@@ -7,7 +7,9 @@ import rushb.webapp.dao.UserDao;
 import rushb.webapp.model.Blog;
 import rushb.webapp.model.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -58,23 +60,44 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void updateBlog(Blog blog) {
         blogDao.updateBlog(blog);
+        Set<Tag> tags = blog.getHashTag();
+        for(Tag tag : tags)
+            if(tagDao.findById(tag.getTagId()) == null)
+                tagDao.save(tag);
+            else
+                tagDao.updateTag(tag);
     }
 
     //TODO implement the logic: Updating Tag along with Updating Blog. When a Tag is detached, Tag.Count--, On the opposite, when a Tag is attached, Tag.Count++;
     @Override
     public void save(Blog blog) {
-
+        blogDao.save(blog);
+        Set<Tag> tags = blog.getHashTag();
+        for(Tag tag : tags)
+            if(tagDao.findById(tag.getTagId()) == null)
+                tagDao.save(tag);
+            else
+                tagDao.updateTag(tag);
     }
 
     //TODO implement the logic: Updating Tag along with Updating Blog. When a Tag is detached, Tag.Count--, On the opposite, when a Tag is attached, Tag.Count++;
     @Override
     public void delete(String blogId) {
-
+        Blog blog = blogDao.findById(blogId);
+        blogDao.delete(blogId);
+        Set<Tag> tags = blog.getHashTag();
+        for(Tag tag : tags)
+            tagDao.detachTag(tag);
     }
 
     //TODO implement API in TagDAO
     @Override
     public List<Tag> mostNPopular(int n) {
-        return null;
+        return tagDao.mostNPopular(n);
+    }
+
+    @Override
+    public List<Tag> listTags() {
+        return new ArrayList<Tag>(tagDao.list());
     }
 }

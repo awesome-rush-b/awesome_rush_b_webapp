@@ -29,4 +29,6 @@ public interface BlogService {
 //    void permDeleteTag(String tagId);
 
     List<Tag> mostNPopular(int n);
+
+    List<Tag> listTags();
 }
