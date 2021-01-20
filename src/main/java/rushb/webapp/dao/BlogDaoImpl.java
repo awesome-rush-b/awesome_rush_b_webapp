@@ -53,16 +53,6 @@ public class BlogDaoImpl implements BlogDao{
         return blogList;
     }
 
-    //In the service layer
-//    @Override
-//    public List<Blog> listByAuthorName(String name) {
-//        List<Blog> blogList = blogMapper.listByAuthorId(name);
-//        for(Blog blog : blogList){
-//            blog.setHashTag(blogTagMapper.listByBlogId(blog.getBlogId()));
-//        }
-//        return blogList;
-//    }
-
     @Override
     public List<Blog> listByTag(String tag) {
         Set<String> blogIdList = blogTagMapper.listByTagId(tag);

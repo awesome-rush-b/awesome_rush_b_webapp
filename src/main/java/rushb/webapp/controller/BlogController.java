@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "Article related")
 @RestController
-public class ArticleController {
+public class BlogController {
 
 //    ArticleService articleService;
 //

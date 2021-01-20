@@ -2,6 +2,7 @@ package rushb.webapp.dao;
 
 import rushb.webapp.model.Tag;
 
+import java.util.List;
 import java.util.Set;
 
 public interface TagDao {
@@ -17,4 +18,6 @@ public interface TagDao {
     void save(Tag tag);
 
     void delete(String tagId);
+
+    List<Tag> mostNPopular(int n);
 }

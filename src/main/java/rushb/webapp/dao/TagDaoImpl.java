@@ -7,15 +7,13 @@ import rushb.webapp.mapper.TagMapper;
 import rushb.webapp.model.Tag;
 
 import javax.annotation.PostConstruct;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Repository
 public class TagDaoImpl implements TagDao{
     private final TagMapper tagMapper;
     private final BlogTagMapper blogTagMapper;
-    private Set<Tag> tags;
+    private TreeSet<Tag> tags;
 
     @Autowired
     public TagDaoImpl(TagMapper tagMapper, BlogTagMapper blogTagMapper) {
@@ -26,6 +24,7 @@ public class TagDaoImpl implements TagDao{
 
     @PostConstruct
     private void setTags(){
+        this.tags.clear();
         this.tags.addAll(tagMapper.list());
 
     }
@@ -65,5 +64,15 @@ public class TagDaoImpl implements TagDao{
     public void delete(String tagId) {
         tagMapper.delete(tagId);
         tags.removeIf(tag -> tag.getTagId().equals(tagId));
+    }
+
+    @Override
+    public List<Tag> mostNPopular(int n) {
+        return null;
+    }
+
+    public void update(){
+        while(tags.size() > 0 && tags.first().getCount() == 0)
+            this.delete(tags.pollFirst().getTagId());
     }
 }
