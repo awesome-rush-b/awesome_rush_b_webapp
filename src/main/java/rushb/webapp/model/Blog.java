@@ -3,7 +3,7 @@ package rushb.webapp.model;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class Blog {
@@ -11,8 +11,9 @@ public class Blog {
     private String title;
     private Date createDate;
     private Date modifyDate;
-    private List<String> HashTag;
+    private Set<Tag> HashTag;
     private String status;
     private String authorId;
     private String content;
+
 }

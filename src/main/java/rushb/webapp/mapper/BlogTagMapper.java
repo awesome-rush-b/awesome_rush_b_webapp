@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface BlogTagMapper {
@@ -16,7 +16,7 @@ public interface BlogTagMapper {
      * @return  list of tags attached to target blog
      */
     @Select("select tagId from blogTag where blogId = #{blogId}")
-    List<String> listByBlogId(String BlogId);
+    Set<String> listByBlogId(String BlogId);
 
     /**
      * List all blogs attached with the target tag
@@ -24,7 +24,7 @@ public interface BlogTagMapper {
      * @return  list of blog attached with target tag
      */
     @Select("select blogId from blogTag where tagId = #{tagId}")
-    List<String> listByTagId(String TagId);
+    Set<String> listByTagId(String TagId);
 
     /**
      * save the Blog and Tag record to database

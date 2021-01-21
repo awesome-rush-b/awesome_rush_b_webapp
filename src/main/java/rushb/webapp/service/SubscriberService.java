@@ -1,10 +1,10 @@
-package rushb.webapp.dao;
+package rushb.webapp.service;
 
 import rushb.webapp.model.Subscriber;
 
 import java.util.List;
 
-public interface SubscriberDao {
+public interface SubscriberService {
     List<Subscriber> list();
 
     List<Subscriber> listByAuthorId(String authorId);

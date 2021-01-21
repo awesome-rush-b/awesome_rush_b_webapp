@@ -3,7 +3,7 @@ package rushb.webapp.mapper;
 import org.apache.ibatis.annotations.*;
 import rushb.webapp.model.Tag;
 
-import java.util.List;
+import java.util.Set;
 
 @Mapper
 public interface TagMapper {
@@ -13,10 +13,10 @@ public interface TagMapper {
      * @return list of al tags from database
      */
     @Select("select * from tag")
-    List<Tag> list();
+    Set<Tag> list();
 
 
-    List<Tag> listTopN(int number);
+    Set<Tag> listTopN(int number);
 
     /**
      * find the tag by id

@@ -64,7 +64,7 @@ public interface BlogMapper {
      * @param blogId    the id of the blog to be deleted
      */
     @Delete("delete from blog where blogId = #{blogId}")
-    void deleteArticle(String blogId);
+    void deleteBlog(String blogId);
 
 
 

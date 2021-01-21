@@ -1,17 +1,22 @@
-package rushb.webapp.dao;
+package rushb.webapp.service;
+
 
 import rushb.webapp.model.Blog;
+import rushb.webapp.model.Tag;
 
 import java.util.List;
 
-public interface BlogDao {
+public interface BlogService {
+
     List<Blog> list();
 
     List<Blog> listByAuthorId(String authorId);
 
+    List<Blog> listByAuthorName(String username);
+
     List<Blog> listByTag(String tag);
 
-    Blog findById(String id);
+    Blog findById(String blogId);
 
     Blog findByTitle(String title);
 
@@ -20,4 +25,10 @@ public interface BlogDao {
     void save(Blog blog);
 
     void delete(String blogId);
+
+//    void permDeleteTag(String tagId);
+
+    List<Tag> mostNPopular(int n);
+
+    List<Tag> listTags();
 }
