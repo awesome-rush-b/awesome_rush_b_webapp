@@ -5,8 +5,8 @@ name: Build & Deploy WebApp
 
 env: # 这里定义了一些变量名
   ARTIFACT_NAME: awesome-webapp-${{ github.sha }}.zip # 这里用到的 github.sha 会生成一个随机字符串，用来区分每一次构建的代码包
-  CODEDEPLOY_APPLICATION_NAME: awesome_rush_b_codedeploy
-  CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: awesome_rush_b_codedeploy_group
+  CODEDEPLOY_APPLICATION_NAME: awesome_rush_b_backend_codedeploy
+  CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME: awesome_rush_b_backend_codedeploy_group
 
 on: # action 出发条件为 master 分支的 push 操作
   push:
