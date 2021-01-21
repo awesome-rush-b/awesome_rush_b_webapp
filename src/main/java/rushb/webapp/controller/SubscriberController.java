@@ -26,11 +26,11 @@ public class SubscriberController {
         return ResponseEntity.ok(subscriberService.list());
     }
 
-    @ApiOperation("list all of the subscribers subscribed the target user from database")
-    @GetMapping("api/subs")
-    public ResponseEntity<List<Subscriber>> listByAuthorId(@RequestParam(value = "authorId") String authorId){
-        return ResponseEntity.ok(subscriberService.listByAuthorId(authorId));
-    }
+//    @ApiOperation("list all of the subscribers subscribed the target user from database")
+//    @GetMapping("api/subs")
+//    public ResponseEntity<List<Subscriber>> listByAuthorId(@RequestParam(value = "authorId") String authorId){
+//        return ResponseEntity.ok(subscriberService.listByAuthorId(authorId));
+//    }
 
     @ApiOperation("find the subscriber by id")
     @GetMapping("api/sub/{id}")
@@ -44,11 +44,11 @@ public class SubscriberController {
         return ResponseEntity.ok(subscriberService.findByName(name));
     }
 
-    @ApiOperation("find the subscriber by email")
-    @GetMapping("api/sub")
-    public ResponseEntity<Subscriber> findByEmail(@RequestParam(value = "email") String email){
-        return ResponseEntity.ok(subscriberService.findByEmail(email));
-    }
+//    @ApiOperation("find the subscriber by email")
+//    @GetMapping("api/sub")
+//    public ResponseEntity<Subscriber> findByEmail(@RequestParam(value = "email") String email){
+//        return ResponseEntity.ok(subscriberService.findByEmail(email));
+//    }
 
     @ApiOperation("create subscription")
     @PostMapping("api/sub")
