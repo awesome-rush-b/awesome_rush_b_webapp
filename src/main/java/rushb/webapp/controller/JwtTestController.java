@@ -23,7 +23,7 @@ public class JwtTestController {
     @Autowired
     private JwtToken jwtToken;
 
-    @ApiOperation("login with username and password")
+    @ApiOperation("login with username and password, the token will expire in 60 seconds")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Map<String, Object> jsonObject) {
         // 1. verify the username and password based on database
