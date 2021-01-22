@@ -9,6 +9,7 @@ import rushb.webapp.model.Blog;
 import rushb.webapp.model.Tag;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -70,13 +71,18 @@ public class BlogDaoImpl implements BlogDao{
         return blogList;
     }
 
+    /**TODO 封装到DAO层可能会导致更多的bug，比如service层如果想要做一个删除的操作，就得现找到这个数据，然后进行删除。这里其实并不需要输出数据
+     *  而是需要提取数据进行再处理，也就不需要进行封装，which might cost extra operations and time。而且在封装的过程中一部分数据可能已经
+     *  从数据库删除，会导致封装过程中找不到数据并且报错
+     */
+
     @Override
     public Blog findById(String id) {
         Blog blog = blogMapper.findById(id);
         Set<String> tags = blogTagMapper.listByBlogId(blog.getBlogId());
-        Set<Tag> tagSet = blog.getHashTag();
+        Set<Tag> tagSet = new HashSet<>();
         for(String tagId : tags){
-            tagSet.add(tagMapper.findById(tagId));
+            tagSet.add(tagMapper.findById(tagId)); //TODO null found
         }
         blog.setHashTag(tagSet);
         return blog;
@@ -99,6 +105,7 @@ public class BlogDaoImpl implements BlogDao{
 
         blogTagMapper.deleteBlog(blog.getBlogId());
         for(Tag tag : blog.getHashTag()){
+            tag.setTagId(tagMapper.findByName(tag.getName()).getTagId());
             blogTagMapper.save(blog.getBlogId(), tag.getTagId());
         }
         blogMapper.updateBlog(blog);
@@ -107,7 +114,9 @@ public class BlogDaoImpl implements BlogDao{
     @Override
     public void save(Blog blog) {
         blogMapper.save(blog);
+        blog.setBlogId(this.findByTitle(blog.getTitle()).getBlogId());
         for(Tag tag : blog.getHashTag()){
+            tag.setTagId(tagMapper.findByName(tag.getName()).getTagId());
             blogTagMapper.save(blog.getBlogId(), tag.getTagId());
         }
     }
@@ -115,6 +124,11 @@ public class BlogDaoImpl implements BlogDao{
     @Override
     public void delete(String blogId) {
         blogMapper.deleteBlog(blogId);
-        blogTagMapper.deleteBlog(blogId);
+//        blogTagMapper.deleteBlog(blogId);
+    }
+
+    @Override
+    public Set<String> listBlogTags(String blogId) {
+        return blogTagMapper.listByBlogId(blogId);
     }
 }

@@ -11,7 +11,7 @@ public class Blog {
     private String title;
     private Date createDate;
     private Date modifyDate;
-    private Set<Tag> HashTag;
+    private Set<Tag> hashTag;
     private String status;
     private String authorId;
     private String content;

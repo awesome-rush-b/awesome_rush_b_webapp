@@ -22,15 +22,14 @@ public class SubscriberController {
 
     @ApiOperation("list all of the subscribers from database")
     @GetMapping("api/subs")
-    public ResponseEntity<List<Subscriber>> list(){
-        return ResponseEntity.ok(subscriberService.list());
+    public ResponseEntity<List<Subscriber>> list(@RequestParam(required = false, name = "authorId") String authorId){
+        List<Subscriber> subscriberList;
+        if(authorId == null)
+            subscriberList = subscriberService.list();
+        else
+            subscriberList = subscriberService.listByAuthorId(authorId);
+        return ResponseEntity.ok(subscriberList);
     }
-
-//    @ApiOperation("list all of the subscribers subscribed the target user from database")
-//    @GetMapping("api/subs")
-//    public ResponseEntity<List<Subscriber>> listByAuthorId(@RequestParam(value = "authorId") String authorId){
-//        return ResponseEntity.ok(subscriberService.listByAuthorId(authorId));
-//    }
 
     @ApiOperation("find the subscriber by id")
     @GetMapping("api/sub/{id}")
@@ -40,15 +39,16 @@ public class SubscriberController {
 
     @ApiOperation("find the subscriber by name")
     @GetMapping("api/sub")
-    public ResponseEntity<Subscriber> findByName(@RequestParam(value = "name") String name){
-        return ResponseEntity.ok(subscriberService.findByName(name));
+    public ResponseEntity<?> findByName(
+            @RequestParam(required = false, name = "name") String name,
+            @RequestParam(required = false, name = "email") String email){
+        if(name != null){
+            return ResponseEntity.ok(subscriberService.findByName(name));
+        }else if(email != null){
+            return ResponseEntity.ok(subscriberService.findByName(email));
+        }else
+            return ResponseEntity.badRequest().body("Name param OR Email param is needed!");
     }
-
-//    @ApiOperation("find the subscriber by email")
-//    @GetMapping("api/sub")
-//    public ResponseEntity<Subscriber> findByEmail(@RequestParam(value = "email") String email){
-//        return ResponseEntity.ok(subscriberService.findByEmail(email));
-//    }
 
     @ApiOperation("create subscription")
     @PostMapping("api/sub")
@@ -56,7 +56,7 @@ public class SubscriberController {
         return ResponseEntity.ok("Subscription with "+subscriber.getSubscriberId()+" has been created");
     }
 
-    @ApiOperation("cancle subscription")
+    @ApiOperation("cancel subscription")
     @DeleteMapping("api/sub/{id}")
     public ResponseEntity<?> delete(@PathVariable String id){
         return ResponseEntity.ok("Subscription with "+id+" has been deleted");

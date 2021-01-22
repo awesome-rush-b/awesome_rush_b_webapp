@@ -31,20 +31,20 @@ public interface BlogTagMapper {
      * @param blogId    the Id of the blog to be saved
      * @param tagId     the Id of the tag to be saved
      */
-    @Insert("insert into blogTag (blogId, tagId) value (#{blogId}, #{tagId})")
+    @Insert("insert into blogTag (blogId, tagId) values (#{blogId}, #{tagId})")
     void save(String blogId, String tagId);
 
     /**
      * delete all of the records related with target Blog from database
      * @param BlogId    the id of target Blog
      */
-    @Delete("delete * from blogTag where blogId = #{blogId}")
+    @Delete("delete from blogTag where blogId = #{blogId}")
     void deleteBlog(String BlogId);
 
     /**
      * delete all of the records related with target Tag from database
      * @param tagId     the id of the target tag
      */
-    @Delete("delete * from blogTag where tagId = #{tagId}")
+    @Delete("delete from blogTag where tagId = #{tagId}")
     void deleteTag(String tagId);
 }
