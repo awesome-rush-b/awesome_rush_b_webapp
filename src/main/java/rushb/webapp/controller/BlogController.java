@@ -24,27 +24,22 @@ public class BlogController {
 
     @ApiOperation("list all of the blogs from database")
     @GetMapping("api/blogs")
-    public ResponseEntity<List<Blog>> list(){
-        return ResponseEntity.ok().body(blogService.list());
+    public ResponseEntity<List<Blog>> list(
+            @RequestParam(required = false, name = "authorId") String authorId,
+            @RequestParam(required = false, name = "authorName") String authorName,
+            @RequestParam(required = false, name = "tagName") String tagName
+    ){
+        List<Blog> blogList;
+        if(authorId != null)
+            blogList=blogService.listByAuthorId(authorId);
+        else if(authorName != null)
+            blogList=blogService.listByAuthorName(authorName);
+        else if(tagName != null)
+            blogList=blogService.listByTag(tagName);
+        else
+            blogList=blogService.list();
+        return ResponseEntity.ok().body(blogList);
     }
-
-//    @ApiOperation("list all of the blogs from database created by the same author")
-//    @GetMapping("api/blogs")
-//    public ResponseEntity<List<Blog>> listByAuthorId(@RequestParam(name = "authorId") String authorId){
-//        return ResponseEntity.ok().body(blogService.listByAuthorId(authorId));
-//    }
-//
-//    @ApiOperation("list all of the blogs from database created by the same author")
-//    @GetMapping("api/blogs")
-//    public ResponseEntity<List<Blog>> listByAuthorName(@RequestParam(name = "authorName") String authorName){
-//        return ResponseEntity.ok().body(blogService.listByAuthorName(authorName));
-//    }
-//
-//    @ApiOperation("list all of the blogs from database attached with the same target tag")
-//    @GetMapping("api/blogs")
-//    public ResponseEntity<List<Blog>> listByTag(@RequestParam(name = "tag") String tagName){
-//        return ResponseEntity.ok().body(blogService.listByTag(tagName));
-//    }
 
     @ApiOperation("find blog by Id")
     @GetMapping("api/blog/{id}")
@@ -58,16 +53,16 @@ public class BlogController {
         return ResponseEntity.ok().body(blogService.findByTitle(title));
     }
 
-//    @ApiOperation("list all top ' number ' of most used tags from database")
-//    @GetMapping("api/tags")
-//    public ResponseEntity<List<Tag>> mostNPopular(@RequestParam(name = "number") Integer num){
-//        return ResponseEntity.ok().body(blogService.mostNPopular(num));
-//    }
 
     @ApiOperation("list all of the tags from database")
     @GetMapping("api/tags")
-    public ResponseEntity<List<Tag>> listTags(){
-        return ResponseEntity.ok().body(blogService.listTags());
+    public ResponseEntity<List<Tag>> listTags(@RequestParam(required = false, name = "number") Integer num){
+        List<Tag> tags;
+        if(num == null)
+            tags = blogService.listTags();
+        else
+            tags = blogService.mostNPopular(num);
+        return ResponseEntity.ok().body(tags);
     }
 
     @ApiOperation("update the target blog")

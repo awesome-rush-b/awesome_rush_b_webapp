@@ -45,14 +45,19 @@ public class TagDaoImpl implements TagDao{
 
     @Override
     public void updateTag(Tag tag) {
-        if(tag.getCount() == 0)
+        //if current tag is not used, then delete it
+        if(tag.getCount() == 0) {
             tagMapper.delete(tag.getTagId());
+            tags.remove(tag);
+        }
+        //else update the tag information in local and database
         else{
             tagMapper.update(tag);
             for(Tag temp : tags){
                 if(temp.getTagId().equals(tag.getTagId())){
                     temp.setCount(tag.getCount());
                     temp.setName(tag.getName());
+                    break;
                 }
             }
         }

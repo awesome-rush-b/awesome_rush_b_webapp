@@ -56,31 +56,42 @@ public class BlogServiceImpl implements BlogService {
         return blogDao.findByTitle(title);
     }
 
-    //TODO implement the logic: Updating Tag along with Updating Blog. When a Tag is detached, Tag.Count--, On the opposite, when a Tag is attached, Tag.Count++;
+    //TODO implement the logic: If blog detached a tag from original copy, detect it and do detach operation!!!!
     @Override
     public void updateBlog(Blog blog) {
-        blogDao.updateBlog(blog);
         Set<Tag> tags = blog.getHashTag();
-        for(Tag tag : tags)
-            if(tagDao.findById(tag.getTagId()) == null)
+        Set<String> tagIds = blogDao.listBlogTags(blog.getBlogId());
+        for(Tag tag : tags) {
+            //if the tag dose not contains tagId, then it is a new tag, create a record for it
+            if (tagDao.findById(tag.getTagId()) == null)
                 tagDao.save(tag);
-            else
+            //if the tag contains a tagId, then it has records, update then
+            else {
                 tagDao.updateTag(tag);
+                tagIds.remove(tag.getTagId());
+            }
+        }
+
+        //if there is tag in original blog, but not appears in the new version, then detach it
+        for(String tagId : tagIds){
+            tagDao.detachTag(tagDao.findById(tagId));
+        }
+
+        blogDao.updateBlog(blog);
     }
 
-    //TODO implement the logic: Updating Tag along with Updating Blog. When a Tag is detached, Tag.Count--, On the opposite, when a Tag is attached, Tag.Count++;
     @Override
     public void save(Blog blog) {
-        blogDao.save(blog);
+
         Set<Tag> tags = blog.getHashTag();
         for(Tag tag : tags)
-            if(tagDao.findById(tag.getTagId()) == null)
+            if(tagDao.findByName(tag.getName()) == null)
                 tagDao.save(tag);
             else
                 tagDao.updateTag(tag);
+        blogDao.save(blog);
     }
 
-    //TODO implement the logic: Updating Tag along with Updating Blog. When a Tag is detached, Tag.Count--, On the opposite, when a Tag is attached, Tag.Count++;
     @Override
     public void delete(String blogId) {
         Blog blog = blogDao.findById(blogId);

@@ -3,6 +3,7 @@ package rushb.webapp.dao;
 import rushb.webapp.model.Blog;
 
 import java.util.List;
+import java.util.Set;
 
 public interface BlogDao {
     List<Blog> list();
@@ -20,4 +21,6 @@ public interface BlogDao {
     void save(Blog blog);
 
     void delete(String blogId);
+
+    Set<String> listBlogTags(String blogId);
 }
