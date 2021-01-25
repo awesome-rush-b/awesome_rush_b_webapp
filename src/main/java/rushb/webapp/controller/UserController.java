@@ -1,6 +1,8 @@
 package rushb.webapp.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,10 @@ public class UserController {
     }
 
     @ApiOperation("Update the User with data included in request body")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", dataType = "string", value = "the id of the user to be updated"),
+            @ApiImplicitParam(name = "user", dataType = "User", value = "the user to be updated, userId included")
+    })
     @PutMapping("api/user/{id}")
     public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody User user){
         userService.updateUser(user);
