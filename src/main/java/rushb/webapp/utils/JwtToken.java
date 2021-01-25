@@ -7,7 +7,7 @@ protected with a Message Authentication Code (MAC) and/or encrypted.
 Reference: https://tools.ietf.org/html/rfc7519
 */
 
-package rushb.webapp;
+package rushb.webapp.utils;
 
 
 import io.jsonwebtoken.Claims;

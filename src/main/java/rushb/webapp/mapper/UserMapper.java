@@ -51,8 +51,9 @@ public interface UserMapper {
      * Save the user into database
      * @param user the user to be registered
      */
+    @SelectKey(statement = "SELECT UUID()", keyProperty = "userId", before = true, resultType = String.class)
     @Insert("insert into user(userId, username, password, email) values " +
-            "(UUID(), #{username}, #{password}, #{email})")
+            "(#{userId}, #{username}, #{password}, #{email})")
     void save(User user);
 
     /**
