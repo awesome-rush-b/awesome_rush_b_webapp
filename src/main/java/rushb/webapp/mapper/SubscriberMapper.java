@@ -59,8 +59,9 @@ public interface SubscriberMapper {
      * create a subscriber
      * @param subscriber    the subscriber to be saved
      */
+    @SelectKey(statement = "SELECT UUID()", keyProperty = "subscriberId", before = true, resultType = String.class)
     @Insert("insert into subscriber(subscriberId, userId, email, name) " +
-            "values(UUID(), #{userId}, #{email},#{name})")
+            "values(#{subscriberId}, #{userId}, #{email},#{name})")
     void save(Subscriber subscriber);
 
     /**

@@ -17,6 +17,7 @@ import java.util.Map;
 
 @Api(tags = "Jwt test api. \n Frontend can use this for test")
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/testApi")
 public class JwtTestController {
     private JwtToken jwtToken;
