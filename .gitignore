@@ -44,3 +44,8 @@ Thumbs.db
 # Files that might appear on external disks
 .Spotlight-V100
 .Trashes
+
+# ignore ssl keys and cert
+localhost.crt
+localhost.key
+localhost.p12

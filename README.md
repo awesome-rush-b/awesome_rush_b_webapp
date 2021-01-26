@@ -30,3 +30,8 @@
         void save(User user);
         ```
       
+### 1/26/2021 - jonah
+
+1. Implemented test classes for DAO classes, and user service
+2. Minor change has been made for Dao impl and tag Mapper.
+3. All test succeed for DAO classes and Service classes 
