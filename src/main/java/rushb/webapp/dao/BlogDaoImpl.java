@@ -82,7 +82,7 @@ public class BlogDaoImpl implements BlogDao{
         Set<String> tags = blogTagMapper.listByBlogId(blog.getBlogId());
         Set<Tag> tagSet = new HashSet<>();
         for(String tagId : tags){
-            tagSet.add(tagMapper.findById(tagId)); //TODO null found
+            tagSet.add(tagMapper.findById(tagId));
         }
         blog.setHashTag(tagSet);
         return blog;

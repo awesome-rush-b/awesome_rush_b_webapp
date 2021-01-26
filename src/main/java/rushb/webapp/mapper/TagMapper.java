@@ -15,9 +15,6 @@ public interface TagMapper {
     @Select("select * from tag")
     Set<Tag> list();
 
-
-    Set<Tag> listTopN(int number);
-
     /**
      * find the tag by id
      * @param id    the id of the target tag
