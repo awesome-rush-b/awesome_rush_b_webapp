@@ -1,4 +1,4 @@
-package rushb.webapp.daoTest;
+package rushb.webapp.apoTest.daoTest;
 
 import org.junit.Before;
 import org.junit.Test;

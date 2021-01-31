@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rushb.webapp.utils.JwtToken;
+import rushb.webapp.utils.JwtTokenUtil;
 
 import javax.security.sasl.AuthenticationException;
 import java.util.Arrays;
@@ -20,11 +20,11 @@ import java.util.Map;
 @CrossOrigin
 @RequestMapping(value = "/testApi")
 public class JwtTestController {
-    private JwtToken jwtToken;
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public JwtTestController(JwtToken jwtToken) {
-        this.jwtToken = jwtToken;
+    public JwtTestController(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @ApiOperation("login with username and password, the token will expire in 60 seconds")
@@ -34,7 +34,7 @@ public class JwtTestController {
         // Todo
         // 2. verified user and generate the token for this user
         String username = (String) jsonObject.get("username");
-        String token = jwtToken.generateToken(username);
+        String token = jwtTokenUtil.generateToken(username);
 
         Map<String, Object> returnObjects = new HashMap<>();
         returnObjects.put("token", token);
@@ -49,8 +49,8 @@ public class JwtTestController {
 
         // forbidden token
         List<String> blacklistToken = Arrays.asList("Forbidden token");
-        Claims claims = jwtToken.getClaimByToken(authHeader);
-        if (claims == null || JwtToken.isTokenExpired(claims.getExpiration()) || blacklistToken.contains(authHeader)) {
+        Claims claims = jwtTokenUtil.getClaimByToken(authHeader);
+        if (claims == null || JwtTokenUtil.isTokenExpired(claims.getExpiration()) || blacklistToken.contains(authHeader)) {
 //            throw new AuthenticationException("token is expired!");
             returnObjects.put("message", "Forbidden token");
             return new ResponseEntity<Map<String, Object>>(returnObjects, HttpStatus.BAD_REQUEST);

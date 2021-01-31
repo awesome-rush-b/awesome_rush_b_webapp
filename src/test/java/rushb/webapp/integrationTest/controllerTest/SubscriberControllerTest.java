@@ -1,4 +1,4 @@
-//package rushb.webapp.controllerTest;
+//package rushb.webapp.integrationTest.controllerTest;
 //
 //import org.json.JSONObject;
 //import org.junit.AfterClass;

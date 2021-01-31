@@ -1,4 +1,4 @@
-package rushb.webapp.serviceTest;
+package rushb.webapp.apoTest.serviceTest;
 
 import org.junit.Before;
 import org.junit.Test;
