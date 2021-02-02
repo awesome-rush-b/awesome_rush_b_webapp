@@ -38,19 +38,27 @@ public class BlogController {
             blogList=blogService.listByTag(tagName);
         else
             blogList=blogService.list();
+        if(blogList == null)
+            return ResponseEntity.status(404).body(null);
         return ResponseEntity.ok().body(blogList);
     }
 
     @ApiOperation("find blog by Id")
     @GetMapping("api/blog/{id}")
     public ResponseEntity<Blog> findById(@PathVariable String id){
-        return ResponseEntity.ok().body(blogService.findById(id));
+        Blog blog = blogService.findById(id);
+        if(blog == null)
+            return ResponseEntity.status(404).body(null);
+        return ResponseEntity.ok().body(blog);
     }
 
     @ApiOperation("find blog by title")
     @GetMapping("api/blog")
     public ResponseEntity<Blog> findByTitle(@RequestParam(name = "title") String title){
-        return ResponseEntity.ok().body(blogService.findByTitle(title));
+        Blog blog = blogService.findByTitle(title);
+        if(blog == null)
+            return ResponseEntity.status(404).body(null);
+        return ResponseEntity.ok().body(blog);
     }
 
 
@@ -62,6 +70,9 @@ public class BlogController {
             tags = blogService.listTags();
         else
             tags = blogService.mostNPopular(num);
+
+        if(tags == null)
+            return ResponseEntity.status(404).body(null);
         return ResponseEntity.ok().body(tags);
     }
 
