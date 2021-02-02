@@ -35,3 +35,6 @@
 1. Implemented test classes for DAO classes, and user service
 2. Minor change has been made for Dao impl and tag Mapper.
 3. All test succeed for DAO classes and Service classes 
+
+### 2/1/2021 - jonah
+1. added 404 handler in controller for the resource not found
