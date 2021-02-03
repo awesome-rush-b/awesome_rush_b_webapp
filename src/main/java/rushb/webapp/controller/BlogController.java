@@ -12,6 +12,7 @@ import rushb.webapp.service.BlogService;
 import java.util.List;
 
 @Api(tags = "Blog related. \n Frontend is responsible for the Tag.Count increment!!")
+@CrossOrigin
 @RestController
 public class BlogController {
 

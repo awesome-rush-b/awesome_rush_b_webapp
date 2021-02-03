@@ -14,6 +14,7 @@ import java.util.List;
 
 
 @Api(tags = "User Controller. Provide User related portal. ")
+@CrossOrigin
 @RestController
 public class UserController {
 

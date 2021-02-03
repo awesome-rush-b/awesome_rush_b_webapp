@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Api(tags = "Jwt test api. \n Frontend can use this for test")
+@Deprecated
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/testApi")

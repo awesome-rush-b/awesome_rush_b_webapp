@@ -11,6 +11,7 @@ import rushb.webapp.service.SubscriberService;
 import java.util.List;
 
 @Api(tags = "Subscriber Controller")
+@CrossOrigin
 @RestController
 public class SubscriberController {
     SubscriberService subscriberService;
