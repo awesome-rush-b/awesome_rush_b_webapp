@@ -40,6 +40,8 @@ public class UserController {
     @GetMapping("api/user/{id}")
     public ResponseEntity<User> findById(@PathVariable String id){
         User user = userService.findById(id);
+        if(user == null)
+            return ResponseEntity.status(404).body(null);
         return ResponseEntity.ok().body(user);
     }
 
@@ -47,6 +49,8 @@ public class UserController {
     @GetMapping("api/user")
     public ResponseEntity<User> findByName(@RequestParam(name = "name") String name){
         User user = userService.findByName(name);
+        if(user == null)
+            return ResponseEntity.status(404).body(null);
         return ResponseEntity.ok().body(user);
     }
 

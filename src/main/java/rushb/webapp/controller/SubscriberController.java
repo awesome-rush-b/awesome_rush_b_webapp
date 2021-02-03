@@ -29,26 +29,36 @@ public class SubscriberController {
             subscriberList = subscriberService.list();
         else
             subscriberList = subscriberService.listByAuthorId(authorId);
+        if(subscriberList == null)
+            return ResponseEntity.status(404).body(null);
         return ResponseEntity.ok(subscriberList);
     }
 
     @ApiOperation("find the subscriber by id")
     @GetMapping("api/sub/{id}")
     public ResponseEntity<Subscriber> findById(@PathVariable String id){
-        return ResponseEntity.ok(subscriberService.findById(id));
+        Subscriber subscriber = subscriberService.findById(id);
+        if(subscriber == null)
+            return ResponseEntity.status(404).body(null);
+        return ResponseEntity.ok(subscriber);
     }
 
     @ApiOperation("find the subscriber by name")
     @GetMapping("api/sub")
-    public ResponseEntity<?> findByName(
+    public ResponseEntity<?> findByEmailOrName(
             @RequestParam(required = false, name = "name") String name,
             @RequestParam(required = false, name = "email") String email){
-        if(name != null){
-            return ResponseEntity.ok(subscriberService.findByName(name));
-        }else if(email != null){
-            return ResponseEntity.ok(subscriberService.findByName(email));
-        }else
+        if(name == null && email == null)
             return ResponseEntity.badRequest().body("Name param OR Email param is needed!");
+        Subscriber subscriber;
+        if(name != null)
+            subscriber = subscriberService.findByName(name);
+        else
+            subscriber = subscriberService.findByEmail(email);
+
+        if(subscriber == null)
+            return ResponseEntity.status(404).body("resource not found");
+        return ResponseEntity.ok(subscriber);
     }
 
     @ApiOperation("create subscription")
