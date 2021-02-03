@@ -39,8 +39,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
+        // process browser pre request
+        if (httpServletRequest.getMethod().equals("OPTIONS")) {
+            httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+            httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,OPTIONS,DELETE");
+            httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
+            httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,Authorization,token");
+            return;
+        }
+
         final String requestTokenHeader = httpServletRequest.getHeader("Authorization");
 
+        // process jwt token
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
         String username = null;
