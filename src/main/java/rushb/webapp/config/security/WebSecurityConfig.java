@@ -1,4 +1,4 @@
-package rushb.webapp.config;
+package rushb.webapp.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import rushb.webapp.fillter.JwtAuthenticationEntryPoint;
 import rushb.webapp.fillter.JwtRequestFilter;
 
 // This class extends the WebSecurityConfigurerAdapter is a convenience class that allows customization
@@ -25,33 +23,32 @@ import rushb.webapp.fillter.JwtRequestFilter;
 // reference: https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/method/configuration/EnableGlobalMethodSecurity.html
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
+    private TokenAccessDeniedHandler tokenAccessDeniedHandler;
 
     private UserDetailsService jwtUserDetailsService;
-
 
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
     public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+                             TokenAccessDeniedHandler tokenAccessDeniedHandler,
                              UserDetailsService jwtUserDetailsService,
                              JwtRequestFilter jwtRequestFilter){
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.tokenAccessDeniedHandler = tokenAccessDeniedHandler;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        // configure AuthenticationManager so that it knows from where to load
-        // user for matching credentials
+
         // todo Use BCryptPasswordEncoder
 
-//        // admin user for testing
-//        authenticationManagerBuilder.inMemoryAuthentication()
-//                .withUser("awesomeRushB").password("rushbp90");
+        // configure AuthenticationManager so that it knows from where to load
+        // user for matching credentials
         authenticationManagerBuilder.userDetailsService(jwtUserDetailsService);
     }
 
@@ -75,7 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                     // make sure we use stateless session; session won't be used to
                     // store user's state.
-                    .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                    .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint) // handle authentication exception
+                    .accessDeniedHandler(tokenAccessDeniedHandler) // handle access denied exception
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request

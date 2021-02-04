@@ -1,5 +1,7 @@
 package rushb.webapp.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
+    protected final Log logger = LogFactory.getLog(this.getClass());
+
     private UserService userService;
 
     @Autowired
@@ -25,6 +29,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
         User user = userService.findByName(username);
         if(user == null){
+            logger.warn("User Detail can find this user by username: "+username);
             throw new UsernameNotFoundException("User not found with username: "+ username);
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
