@@ -43,9 +43,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
         // process browser pre request
-        String origin = httpServletRequest.getHeader("Origin");
+//        String origin = httpServletRequest.getHeader("Origin");
         if (httpServletRequest.getMethod().equals("OPTIONS")) {
-            httpServletResponse.setHeader("Access-Control-Allow-Origin", origin);
+//            httpServletResponse.setHeader("Access-Control-Allow-Origin", origin);
+            httpServletResponse.setHeader("Access-Control-Allow-Origin","*");
             httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST,GET,PUT,OPTIONS,DELETE");
             httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
             httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin,X-Requested-With,Content-Type,Accept,Authorization,token");
