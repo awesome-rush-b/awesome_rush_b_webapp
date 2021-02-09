@@ -2,16 +2,22 @@ package rushb.webapp.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rushb.webapp.exception.BlogNotFoundException;
+import rushb.webapp.exception.TagNotFoundException;
 import rushb.webapp.model.Blog;
+import rushb.webapp.model.ResponseResult;
 import rushb.webapp.model.Tag;
 import rushb.webapp.service.BlogService;
 
+import java.util.Date;
 import java.util.List;
 
-@Api(tags = "Blog related. \n Frontend is responsible for the Tag.Count increment!!")
+@Api(tags = "3 Blog Related")
+//Frontend is responsible for the Tag.Count increment!!
 @CrossOrigin
 @RestController
 public class BlogController {
@@ -23,79 +29,175 @@ public class BlogController {
         this.blogService = blogService;
     }
 
-    @ApiOperation("list all of the blogs from database")
+    @ApiOperation(
+            value = "list all of the blogs from database",
+            produces = "application/json")
     @GetMapping("api/blogs")
-    public ResponseEntity<List<Blog>> list(
-            @RequestParam(required = false, name = "authorId") String authorId,
-            @RequestParam(required = false, name = "authorName") String authorName,
-            @RequestParam(required = false, name = "tagName") String tagName
-    ){
+    public ResponseEntity<ResponseResult<List<Blog>>> list() {
         List<Blog> blogList;
-        if(authorId != null)
-            blogList=blogService.listByAuthorId(authorId);
-        else if(authorName != null)
-            blogList=blogService.listByAuthorName(authorName);
-        else if(tagName != null)
-            blogList=blogService.listByTag(tagName);
-        else
-            blogList=blogService.list();
-        if(blogList == null)
-            return ResponseEntity.status(404).body(null);
-        return ResponseEntity.ok().body(blogList);
+        blogList = blogService.list();
+        return ResponseEntity.ok(new ResponseResult<List<Blog>>(
+                new Date(),
+                true,
+                "All blogs detail",
+                "Get the list of all blogs",
+                blogList
+        ));
     }
 
-    @ApiOperation("find blog by Id")
+    @ApiOperation(
+            value = "list all of the blogs by author name from database",
+            produces = "application/json")
+    @GetMapping("api/blogs/{authorName}")
+    public ResponseEntity<ResponseResult<List<Blog>>> listBlogsByAuthorName(@PathVariable String authorName) {
+        List<Blog> blogList;
+        blogList = blogService.listByAuthorName(authorName);
+        return ResponseEntity.ok(new ResponseResult<List<Blog>>(
+                new Date(),
+                true,
+                "All blogs detail",
+                "Get the list of all blogs from author: " + authorName,
+                blogList
+        ));
+    }
+
+    @ApiOperation(
+            value = "list all of the blogs by author name from database",
+            produces = "application/json")
+    @GetMapping("api/blogs/{tagName}")
+    public ResponseEntity<ResponseResult<List<Blog>>> listBlogsByTagName(@PathVariable String tagName) {
+        List<Blog> blogList;
+        blogList = blogService.listByAuthorName(tagName);
+        return ResponseEntity.ok(new ResponseResult<List<Blog>>(
+                new Date(),
+                true,
+                "All blogs detail",
+                "Get the list of all blogs by tag name: " + tagName,
+                blogList
+        ));
+    }
+
+    @ApiOperation(
+            value = "find blog by Id",
+            produces = "application/json")
     @GetMapping("api/blog/{id}")
-    public ResponseEntity<Blog> findById(@PathVariable String id){
+    public ResponseEntity<ResponseResult<Blog>> findById(@PathVariable String id) {
         Blog blog = blogService.findById(id);
-        if(blog == null)
-            return ResponseEntity.status(404).body(null);
-        return ResponseEntity.ok().body(blog);
+        if (blog == null)
+            throw new BlogNotFoundException("No blog id match " + id + " !");
+        return ResponseEntity.ok(new ResponseResult<Blog>(
+                new Date(),
+                true,
+                "Find blog by blogId",
+                "Return blog's detail by blogId",
+                blog
+        ));
     }
 
-    @ApiOperation("find blog by title")
-    @GetMapping("api/blog")
-    public ResponseEntity<Blog> findByTitle(@RequestParam(name = "title") String title){
-        Blog blog = blogService.findByTitle(title);
-        if(blog == null)
-            return ResponseEntity.status(404).body(null);
-        return ResponseEntity.ok().body(blog);
+    @ApiOperation(
+            value = "(fuzzy search)find blog by title",
+            produces = "application/json")
+    @GetMapping("api/blog/{title}")
+    public ResponseEntity<ResponseResult<List<Blog>>> findByTitle(@PathVariable String title) {
+        List<Blog> blogs = blogService.findByTitle(title);
+        if (blogs.size() == 0)
+            throw new BlogNotFoundException("No blog title start or end with " + title + " !");
+        return ResponseEntity.ok(new ResponseResult<List<Blog>>(
+                new Date(),
+                true,
+                "Fuzzy search for blogs",
+                "List all blogs that title start with or end with " + title,
+                blogs
+        ));
     }
 
 
-    @ApiOperation("list all of the tags from database")
+    @ApiOperation(
+            value = "list all of the tags from database",
+            produces = "application/json")
+
     @GetMapping("api/tags")
-    public ResponseEntity<List<Tag>> listTags(@RequestParam(required = false, name = "number") Integer num){
+    public ResponseEntity<ResponseResult<List<Tag>>> listTags(
+            @ApiParam(
+                    name = "number",
+                    type = "Integer",
+                    value = "It's not require. If there is a integer value, the result will return the top 'number' tags",
+                    required = false)
+            @RequestParam(required = false) Integer number) {
         List<Tag> tags;
-        if(num == null)
+        if (number == null)
             tags = blogService.listTags();
         else
-            tags = blogService.mostNPopular(num);
+            tags = blogService.mostNPopular(number);
 
-        if(tags == null)
-            return ResponseEntity.status(404).body(null);
-        return ResponseEntity.ok().body(tags);
+        if (tags == null)
+            throw new TagNotFoundException("No tag found!");
+        return number == null ? ResponseEntity.ok(new ResponseResult<List<Tag>>(
+                new Date(),
+                true,
+                "List all of the tags",
+                "Return all the tags",
+                tags
+        )) : ResponseEntity.ok(new ResponseResult<List<Tag>>(
+                new Date(),
+                true,
+                "List all of the tags",
+                "Return the top " + number + " tags",
+                tags
+        ));
     }
 
-    @ApiOperation("update the target blog")
-    @PutMapping("api/blog/{id}")
-    public ResponseEntity<?> updateBlog(@PathVariable String id, @RequestBody Blog blog){
+    @ApiOperation(
+            value = "update the target blog",
+            produces = "application/json")
+    @PutMapping("api/blog")
+    public ResponseEntity<ResponseResult<Blog>> updateBlog(@RequestBody Blog blog) {
+        if (blogService.findById(blog.getBlogId()) == null) {
+            throw new BlogNotFoundException("The blog " + blog.getBlogId() + " is not found!");
+        }
         blogService.updateBlog(blog);
-        return ResponseEntity.ok().body("Blog "+id+" has been updated");
+        return ResponseEntity.ok(new ResponseResult<Blog>(
+                new Date(),
+                true,
+                "Update blog success!",
+                "Blog " + blog.getBlogId() + " has been updated",
+                blog
+        ));
     }
 
-    @ApiOperation("Create a blog")
+    @ApiOperation(
+            value = "create a blog",
+            produces = "application/json")
     @PostMapping("api/blog")
-    public ResponseEntity<?> saveBlog(@RequestBody Blog blog){
+    public ResponseEntity<ResponseResult<Blog>> saveBlog(@RequestBody Blog blog) {
         blogService.save(blog);
-        return ResponseEntity.ok().body("Blog "+blog.getBlogId()+" has been created");
+        return ResponseEntity.ok(new ResponseResult<Blog>(
+                new Date(),
+                true,
+                "Create blog success!",
+                "Blog " + blog.getBlogId() + " has been created",
+                blog
+        ));
     }
 
-    @ApiOperation("delete a blog")
+    @ApiOperation(
+            value = "delete a blog",
+            produces = "application/json")
     @DeleteMapping("api/blog/{id}")
-    public ResponseEntity<?> deleteBlog(@PathVariable String id){
+    public ResponseEntity<ResponseResult<Blog>> deleteBlog(@PathVariable String id) {
+        Blog blog = blogService.findById(id);
+        if (blog != null) {
+            throw new BlogNotFoundException("The blog " + id + " is not found!");
+        }
+
         blogService.delete(id);
-        return ResponseEntity.ok().body("Blog "+id+" has been deleted");
+        return ResponseEntity.ok(new ResponseResult<Blog>(
+                new Date(),
+                true,
+                "Delete blog success!",
+                "Blog " + id + " has been deleted",
+                blog
+        ));
     }
 
 

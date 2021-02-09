@@ -79,7 +79,7 @@ public class BlogDaoTest {
         Mockito.when(blogMapper.list()).thenReturn(blogList);
         Mockito.when(blogMapper.listByAuthorId(blog.getAuthorId())).thenReturn(blogList);
         Mockito.when(blogMapper.findById(blog.getBlogId())).thenReturn(blog);
-        Mockito.when(blogMapper.findByTitle(blog.getTitle())).thenReturn(blog);
+        Mockito.when(blogMapper.findByTitle(blog.getTitle())).thenReturn(Arrays.asList(blog));
 
 
         // tagMapper

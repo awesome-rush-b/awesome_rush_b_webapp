@@ -109,7 +109,7 @@ public class BlogServiceTest {
         Mockito.when(blogDao.listByAuthorId(authorId)).thenReturn(Arrays.asList(blog));
         Mockito.when(blogDao.listByTag(tagName)).thenReturn(Arrays.asList(blog));
         Mockito.when(blogDao.findById(blogId)).thenReturn(blog);
-        Mockito.when(blogDao.findByTitle(title)).thenReturn(blog);
+        Mockito.when(blogDao.findByTitle(title)).thenReturn(Arrays.asList(blog));
 
         Set<String> tagNames = new HashSet<>();
         tagNames.add(tag.getName());
@@ -162,7 +162,7 @@ public class BlogServiceTest {
      */
     @Test
     public void testFindByTitle(){
-        Blog result = blogService.findByTitle(title);
+        Blog result = blogService.findByTitle(title).get(0);
         assertThat(result).isEqualTo(blog);
     }
 

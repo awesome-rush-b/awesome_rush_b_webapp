@@ -33,12 +33,12 @@ public interface BlogMapper {
     Blog findById(String blogId);
 
     /**
-     * find blog by title
+     * find blog by title (fuzzy search)
      * @param title the title of the blog to be found
      * @return  the target blog
      */
-    @Select("select * from blog where title = #{title}")
-    Blog findByTitle(String title);
+    @Select("select * from blog where title like %#{title}%")
+    List<Blog> findByTitle(String title);
 
     //TODO to set the CreateDate and ModifyDate logic in Database side
     /**
@@ -52,8 +52,9 @@ public interface BlogMapper {
      * create a blog
      * @param blog  the blog to be created
      */
+    @SelectKey(statement = "SELECT UUID()", keyProperty = "blogId", before = true, resultType = String.class)
     @Insert("insert into blog (blogId, title, content, status, authorId) value" +
-            "(UUID(), #{title}, #{content}, #{status}, #{authorId})")
+            "(#{blogId}, #{title}, #{content}, #{status}, #{authorId})")
 //    void save(@Param("id") Long id, @Param("name") String name, @Param("createDate")Date createDate,
 //              @Param("modifyDate") Date modifyDate, @Param("hashtag") List<String> hashtag,
 //              @Param("status") String status, @Param("author") String author);

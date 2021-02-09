@@ -18,7 +18,7 @@ public interface BlogService {
 
     Blog findById(String blogId);
 
-    Blog findByTitle(String title);
+    List<Blog> findByTitle(String title);
 
     void updateBlog(Blog blog);
 

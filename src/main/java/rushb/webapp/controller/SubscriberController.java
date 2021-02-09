@@ -10,7 +10,7 @@ import rushb.webapp.service.SubscriberService;
 
 import java.util.List;
 
-@Api(tags = "Subscriber Controller")
+@Api(tags = "4 Subscriber Related")
 @CrossOrigin
 @RestController
 public class SubscriberController {

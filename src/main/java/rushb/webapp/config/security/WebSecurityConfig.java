@@ -23,21 +23,21 @@ import rushb.webapp.fillter.JwtRequestFilter;
 // reference: https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/method/configuration/EnableGlobalMethodSecurity.html
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private WebAuthenticationEntryPoint webAuthenticationEntryPoint;
 
-    private TokenAccessDeniedHandler tokenAccessDeniedHandler;
+    private WebAccessDeniedHandler webAccessDeniedHandler;
 
     private UserDetailsService jwtUserDetailsService;
 
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-                             TokenAccessDeniedHandler tokenAccessDeniedHandler,
+    public WebSecurityConfig(WebAuthenticationEntryPoint webAuthenticationEntryPoint,
+                             WebAccessDeniedHandler webAccessDeniedHandler,
                              UserDetailsService jwtUserDetailsService,
                              JwtRequestFilter jwtRequestFilter){
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-        this.tokenAccessDeniedHandler = tokenAccessDeniedHandler;
+        this.webAuthenticationEntryPoint = webAuthenticationEntryPoint;
+        this.webAccessDeniedHandler = webAccessDeniedHandler;
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
     }
@@ -72,8 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                     // make sure we use stateless session; session won't be used to
                     // store user's state.
-                    .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint) // handle authentication exception
-                    .accessDeniedHandler(tokenAccessDeniedHandler) // handle access denied exception
+                    .and().exceptionHandling().authenticationEntryPoint(webAuthenticationEntryPoint) // handle authentication exception
+                    .accessDeniedHandler(webAccessDeniedHandler) // handle access denied exception
                     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request

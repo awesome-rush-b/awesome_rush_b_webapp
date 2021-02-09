@@ -14,7 +14,7 @@ public interface BlogDao {
 
     Blog findById(String id);
 
-    Blog findByTitle(String title);
+    List<Blog> findByTitle(String title);
 
     void updateBlog(Blog blog);
 

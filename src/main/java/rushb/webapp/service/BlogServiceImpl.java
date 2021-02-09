@@ -52,7 +52,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
-    public Blog findByTitle(String title) {
+    public List<Blog> findByTitle(String title) {
         return blogDao.findByTitle(title);
     }
 

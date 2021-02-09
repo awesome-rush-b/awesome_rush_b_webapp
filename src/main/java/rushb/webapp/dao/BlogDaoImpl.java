@@ -89,15 +89,17 @@ public class BlogDaoImpl implements BlogDao{
     }
 
     @Override
-    public Blog findByTitle(String title) {
-        Blog blog = blogMapper.findByTitle(title);
-        Set<String> tags = blogTagMapper.listByBlogId(blog.getBlogId());
-        Set<Tag> tagSet = blog.getHashTag();
-        for(String tagId : tags){
-            tagSet.add(tagMapper.findById(tagId));
+    public List<Blog> findByTitle(String title) {
+        List<Blog> blogs = blogMapper.findByTitle(title);
+        for(Blog blog : blogs){
+            Set<String> tags = blogTagMapper.listByBlogId(blog.getBlogId());
+            Set<Tag> tagSet = blog.getHashTag();
+            for(String tagId : tags){
+                tagSet.add(tagMapper.findById(tagId));
+            }
+            blog.setHashTag(tagSet);
         }
-        blog.setHashTag(tagSet);
-        return blog;
+        return blogs;
     }
 
     @Override
@@ -114,7 +116,7 @@ public class BlogDaoImpl implements BlogDao{
     @Override
     public void save(Blog blog) {
         blogMapper.save(blog);
-        blog.setBlogId(this.findByTitle(blog.getTitle()).getBlogId());
+//        blog.setBlogId(this.findByTitle(blog.getTitle()).getBlogId());
         for(Tag tag : blog.getHashTag()){
             tag.setTagId(tagMapper.findByName(tag.getName()).getTagId());
             blogTagMapper.save(blog.getBlogId(), tag.getTagId());

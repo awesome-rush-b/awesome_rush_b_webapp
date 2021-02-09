@@ -123,6 +123,18 @@
             <scope>test</scope>
         </dependency>
 
+        <!--        For customized properties prevent "spring boot configuration annotation processor not found in classpath" warning in idea-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--        Validation-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

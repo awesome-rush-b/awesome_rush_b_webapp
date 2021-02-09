@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rushb.webapp.utils.JwtTokenUtil;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.security.sasl.AuthenticationException;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(tags = "Jwt test api. \n Frontend can use this for test")
+@ApiIgnore()
 @Deprecated
 @RestController
 @CrossOrigin

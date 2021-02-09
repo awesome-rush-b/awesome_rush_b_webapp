@@ -63,7 +63,12 @@ public interface UserMapper {
     @Delete("delete from user where userId = #{userId}")
     void deleteUser(String userId);
 
-
+    /**
+     * delete the user by username
+     * @param username
+     */
+    @Delete("delete from user where username = #{username}")
+    void deleteByUsername(String username);
 
 
 }

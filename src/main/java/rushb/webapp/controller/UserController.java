@@ -1,19 +1,24 @@
 package rushb.webapp.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rushb.webapp.exception.UserAlreadyExistException;
+import rushb.webapp.exception.UserNotFoundException;
+import rushb.webapp.model.ResponseResult;
 import rushb.webapp.model.User;
 import rushb.webapp.service.UserService;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.List;
 
 
-@Api(tags = "User Controller. Provide User related portal. ")
+@Api(tags = "2 User Related")
+//Provide User related portal.
 @CrossOrigin
 @RestController
 public class UserController {
@@ -25,54 +30,113 @@ public class UserController {
         this.userService = userService;
     }
 
-    @ApiOperation("Update the User with data included in request body")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", dataType = "string", value = "the id of the user to be updated"),
-            @ApiImplicitParam(name = "user", dataType = "User", value = "the user to be updated, userId included")
-    })
-    @PutMapping("api/user/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody User user){
-        userService.updateUser(user);
-        return ResponseEntity.ok().body("Username has been changed successfully");
-    }
-
-    @ApiOperation("Get the User by User Id")
-    @GetMapping("api/user/{id}")
-    public ResponseEntity<User> findById(@PathVariable String id){
-        User user = userService.findById(id);
-        if(user == null)
-            return ResponseEntity.status(404).body(null);
-        return ResponseEntity.ok().body(user);
-    }
-
-    @ApiOperation("Get the User by User name")
-    @GetMapping("api/user")
-    public ResponseEntity<User> findByName(@RequestParam(name = "name") String name){
-        User user = userService.findByName(name);
-        if(user == null)
-            return ResponseEntity.status(404).body(null);
-        return ResponseEntity.ok().body(user);
-    }
-
-    @ApiOperation("Get all of the User records from database")
+    @ApiOperation(
+            value = "Get all of the User records from database",
+            produces = "application/json")
     @GetMapping("api/users")
-    public ResponseEntity<List<User>> list(){
-        return ResponseEntity.ok().body(userService.list());
+    public ResponseEntity<ResponseResult<List<User>>> list() {
+        return ResponseEntity.ok(new ResponseResult<List<User>>(
+                new Date(),
+                true,
+                "All users' information",
+                "Get all of the User(Blog creator) records from database",
+                userService.list()
+        ));
+    }
+
+    @ApiOperation(
+            value = "Get the User by User name",
+            produces = "application/json")
+    @GetMapping("api/user")
+    public ResponseEntity<ResponseResult<User>> findByName(@NotBlank @RequestParam(name = "username") String username) {
+        User user = userService.findByName(username);
+        if (user == null) {
+            throw new UserNotFoundException("User cannot be found by username: " + username);
+        }
+        return ResponseEntity.ok(new ResponseResult<>(
+                new Date(),
+                true,
+                "Get user detail by username",
+                "Return user's detail",
+                user
+        ));
+    }
+
+    @ApiOperation(
+            value = "Update the User detail",
+            notes = "Update the User with data included in request body",
+            produces = "application/json")
+    @PutMapping("api/user")
+    public ResponseEntity<ResponseResult<User>> updateUser(@Valid @RequestBody User user) {
+
+        if (userService.findByName(user.getUsername()) == null) {
+            throw new UserNotFoundException("User cannot be found by username: " + user.getUsername());
+        }
+
+        userService.updateUser(user);
+        return ResponseEntity.ok(new ResponseResult<>(
+                new Date(),
+                true,
+                "Username has been changed successfully",
+                "Changed user's info is in resultData",
+                user
+        ));
     }
 
     /////////////////////// TESTING ONLY BBBBBAAAAAADDDDD PRACTICE //////////////////////////
-    @ApiOperation("Delete the User by userId. (TEST ONLY BAD PRACTICE)")
-    @DeleteMapping("api/user/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id){
-        userService.delete(id);
-        return ResponseEntity.ok().body("user "+id+" has been deleted");
+    @ApiOperation(
+            value = "(TEST ONLY)Delete the User by userId.",
+            produces = "application/json"
+    )
+    @DeleteMapping("api/user/{username}")
+    public ResponseEntity<ResponseResult<String>> delete(@PathVariable String username) {
+
+        if (userService.findByName(username) == null) {
+            throw new UserNotFoundException("The user cannot be found by username: " + username);
+        }
+
+        userService.deleteByUsername(username);
+        return ResponseEntity.ok(new ResponseResult<String>(
+                new Date(),
+                true,
+                "Delete success!",
+                "User with username: " + username,
+                "User has been deleted!"
+        ));
     }
 
-    @ApiOperation("Create an User. (TEST ONLY BAD PRACTICE)")
+    @ApiOperation(
+            value = "(TEST ONLY)Create an User.",
+            produces = "application/json")
     @PostMapping("api/user")
-    public ResponseEntity<?> save(@RequestBody User user){
+    public ResponseEntity<ResponseResult<User>> save(@RequestBody User user) {
+        if (userService.findByName(user.getUsername()) != null) {
+            throw new UserAlreadyExistException("The user with username " + user.getUsername() + " already exist!");
+        }
+
         userService.save(user);
-        return ResponseEntity.ok().body("user "+user.getUserId()+" has been created");
+
+        return ResponseEntity.ok(new ResponseResult<User>(
+                new Date(),
+                true,
+                "User created success",
+                "User detail can be found in resultData",
+                user
+        ));
+    }
+
+    // Username should be unique So this api has been deprecated
+    @ApiIgnore
+    @Deprecated
+    @ApiOperation(
+            value = "Get the User by User Id",
+            produces = "application/json")
+    @GetMapping("api/user/{id}")
+    public ResponseEntity<User> findById(@PathVariable String id) {
+        User user = userService.findById(id);
+        if (user == null)
+            return ResponseEntity.status(404).body(null);
+        return ResponseEntity.ok().body(user);
     }
 
 //
@@ -81,8 +145,6 @@ public class UserController {
 //        List<Blog> blogList = userService.getAllArticle();
 //        return ResponseEntity.ok().body(blogList);
 //    }
-
-
 
 
 }

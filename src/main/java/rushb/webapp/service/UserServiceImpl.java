@@ -8,7 +8,7 @@ import rushb.webapp.model.User;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     UserDao userDao;
 
@@ -50,5 +50,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void delete(String userId) {
         userDao.delete(userId);
+    }
+
+    @Override
+    public void deleteByUsername(String username) {
+        userDao.deleteByUsername(username);
     }
 }

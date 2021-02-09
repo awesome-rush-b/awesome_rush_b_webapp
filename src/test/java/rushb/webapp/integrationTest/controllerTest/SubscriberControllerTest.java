@@ -1,5 +1,7 @@
 //package rushb.webapp.integrationTest.controllerTest;
 //
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 //import org.json.JSONObject;
 //import org.junit.AfterClass;
 //import org.junit.BeforeClass;
@@ -13,7 +15,6 @@
 //import org.springframework.boot.web.server.LocalServerPort;
 //import org.springframework.http.*;
 //import org.springframework.test.context.junit4.SpringRunner;
-//import rushb.webapp.utils.JwtToken;
 //
 //import static org.assertj.core.api.Assertions.assertThat;
 //
@@ -21,7 +22,7 @@
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //public class SubscriberControllerTest {
 //
-//    private static final Logger logger = LoggerFactory.getLogger(JwtToken.class);
+//    protected static final Log logger = LogFactory.getLog(this.getClass());
 //
 //    @LocalServerPort
 //    private static int port;

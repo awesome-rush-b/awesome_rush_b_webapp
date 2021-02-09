@@ -6,6 +6,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import rushb.webapp.exception.ExceptionResponse;
+import rushb.webapp.model.ResponseResult;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,7 @@ import java.util.Date;
 
 // process authorization exception
 @Component
-public class TokenAccessDeniedHandler implements AccessDeniedHandler {
+public class WebAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -26,7 +27,18 @@ public class TokenAccessDeniedHandler implements AccessDeniedHandler {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         // 403 forbidden for access denied
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(),"Forbidden",accessDeniedException.getMessage());
+//        ResponseResult<Object> responseResult = new ResponseResult(
+//                new Date(),
+//                false,
+//                "Token invalid!",
+//                accessDeniedException.getMessage(),
+//                null
+//        );
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                "Login failed",
+                accessDeniedException.getMessage()
+        );
         httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403 forbidden
         httpServletResponse.setContentType("application/json");
         httpServletResponse.getWriter().write(objectMapper.writeValueAsString(exceptionResponse));

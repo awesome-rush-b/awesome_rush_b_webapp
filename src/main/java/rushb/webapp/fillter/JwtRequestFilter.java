@@ -68,17 +68,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                logger.warn("Cannot get JWT token");
+                logger.debug("Cannot get JWT token");
             } catch (ExpiredJwtException e) {
-                logger.warn("JWT token has expired");
+                logger.debug("JWT token has expired");
             }
         } else {
             // check if there is token
             if(requestTokenHeader != null){
                 // If JWT token does not have Bearer
-                logger.warn("JWT token does not have the 'Bearer'");
+                logger.debug("JWT token does not have the 'Bearer'");
             }else{
-                logger.info("No Authorization Header");
+                logger.debug("No Authorization Header");
             }
         }
 
