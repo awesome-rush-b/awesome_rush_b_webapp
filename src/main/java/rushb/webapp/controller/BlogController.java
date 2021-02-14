@@ -48,7 +48,7 @@ public class BlogController {
     @ApiOperation(
             value = "list all of the blogs by author name from database",
             produces = "application/json")
-    @GetMapping("api/blogs/{authorName}")
+    @GetMapping("api/blogs/authorName/{authorName}")
     public ResponseEntity<ResponseResult<List<Blog>>> listBlogsByAuthorName(@PathVariable String authorName) {
         List<Blog> blogList;
         blogList = blogService.listByAuthorName(authorName);
@@ -64,7 +64,7 @@ public class BlogController {
     @ApiOperation(
             value = "list all of the blogs by author name from database",
             produces = "application/json")
-    @GetMapping("api/blogs/{tagName}")
+    @GetMapping("api/blogs/tagName/{tagName}")
     public ResponseEntity<ResponseResult<List<Blog>>> listBlogsByTagName(@PathVariable String tagName) {
         List<Blog> blogList;
         blogList = blogService.listByAuthorName(tagName);
@@ -80,7 +80,7 @@ public class BlogController {
     @ApiOperation(
             value = "find blog by Id",
             produces = "application/json")
-    @GetMapping("api/blog/{id}")
+    @GetMapping("api/blog/id/{id}")
     public ResponseEntity<ResponseResult<Blog>> findById(@PathVariable String id) {
         Blog blog = blogService.findById(id);
         if (blog == null)
@@ -97,7 +97,7 @@ public class BlogController {
     @ApiOperation(
             value = "(fuzzy search)find blog by title",
             produces = "application/json")
-    @GetMapping("api/blog/{title}")
+    @GetMapping("api/blog/title/{title}")
     public ResponseEntity<ResponseResult<List<Blog>>> findByTitle(@PathVariable String title) {
         List<Blog> blogs = blogService.findByTitle(title);
         if (blogs.size() == 0)
@@ -183,7 +183,7 @@ public class BlogController {
     @ApiOperation(
             value = "delete a blog",
             produces = "application/json")
-    @DeleteMapping("api/blog/{id}")
+    @DeleteMapping("api/blog/id/{id}")
     public ResponseEntity<ResponseResult<Blog>> deleteBlog(@PathVariable String id) {
         Blog blog = blogService.findById(id);
         if (blog != null) {

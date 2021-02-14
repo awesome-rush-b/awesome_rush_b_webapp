@@ -37,7 +37,7 @@ public interface BlogMapper {
      * @param title the title of the blog to be found
      * @return  the target blog
      */
-    @Select("select * from blog where title like %#{title}%")
+    @Select("select * from blog where title like CONCAT('%',#{title},'%')")
     List<Blog> findByTitle(String title);
 
     //TODO to set the CreateDate and ModifyDate logic in Database side
