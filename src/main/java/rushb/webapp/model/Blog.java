@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -27,7 +28,7 @@ public class Blog {
     @NotNull(message = "blog should always have a modify date")
     private Date modifyDate;
 
-    private Set<Tag> hashTag;
+    private Set<Tag> hashTag = new HashSet<>();
 
     @Pattern(regexp = "")
     private String status;

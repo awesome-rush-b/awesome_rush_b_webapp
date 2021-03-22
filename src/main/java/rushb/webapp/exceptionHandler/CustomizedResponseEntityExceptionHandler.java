@@ -15,16 +15,16 @@ import java.util.Date;
 @Controller
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> handleAllException(Exception exception, WebRequest webRequest){
-        ExceptionResponse exceptionResponse = new ExceptionResponse(
-                new Date(),
-                exception.getMessage(),
-                webRequest.getDescription(false)
-        );
-        // true or false includeClientInfo - whether to include client-specific information such as session id and user name
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ExceptionResponse> handleAllException(Exception exception, WebRequest webRequest){
+//        ExceptionResponse exceptionResponse = new ExceptionResponse(
+//                new Date(),
+//                exception.getMessage(),
+//                webRequest.getDescription(false)
+//        );
+//        // true or false includeClientInfo - whether to include client-specific information such as session id and user name
+//        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleUserNotFoundException(UserNotFoundException exception, WebRequest webRequest){
