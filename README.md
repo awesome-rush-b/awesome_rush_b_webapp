@@ -38,3 +38,8 @@
 
 ### 2/1/2021 - jonah
 1. added 404 handler in controller for the resource not found
+
+### 3/21/2021 - mark
+1. Refactored UI
+2. Integrated 3rd party components & updated new API without jwt token
+3. developed Main Page & add hash tag search part
