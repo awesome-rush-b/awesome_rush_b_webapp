@@ -133,4 +133,9 @@ public class BlogDaoImpl implements BlogDao{
     public Set<String> listBlogTags(String blogId) {
         return blogTagMapper.listByBlogId(blogId);
     }
+
+    @Override
+    public void blogViewPlusOne(String blogId) {
+        blogMapper.blogViewPlusOne(blogId);
+    }
 }

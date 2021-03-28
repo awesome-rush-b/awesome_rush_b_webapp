@@ -23,4 +23,6 @@ public interface BlogDao {
     void delete(String blogId);
 
     Set<String> listBlogTags(String blogId);
+
+    void blogViewPlusOne(String blogId);
 }

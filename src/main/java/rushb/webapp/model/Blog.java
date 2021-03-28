@@ -38,4 +38,6 @@ public class Blog {
 
     private String content;
 
+    private int views;
+
 }

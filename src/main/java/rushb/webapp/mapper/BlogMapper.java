@@ -68,6 +68,12 @@ public interface BlogMapper {
     void deleteBlog(String blogId);
 
 
+    /**
+     * add views for a blog
+     * @param blogId the id of the blog
+     */
+    @Update("update blog set views=views+1 where blogId=#{id}")
+    void blogViewPlusOne(String blogId);
 
 
 

@@ -111,4 +111,9 @@ public class BlogServiceImpl implements BlogService {
     public List<Tag> listTags() {
         return new ArrayList<Tag>(tagDao.list());
     }
+
+    @Override
+    public void blogViewPlusOne(String blogId){
+        blogDao.blogViewPlusOne(blogId);
+    }
 }

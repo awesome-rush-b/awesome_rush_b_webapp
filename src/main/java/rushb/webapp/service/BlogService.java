@@ -31,4 +31,6 @@ public interface BlogService {
     List<Tag> mostNPopular(int n);
 
     List<Tag> listTags();
+
+    void blogViewPlusOne(String blogId);
 }

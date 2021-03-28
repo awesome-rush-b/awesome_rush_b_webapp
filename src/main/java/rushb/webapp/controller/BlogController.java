@@ -13,6 +13,7 @@ import rushb.webapp.model.ResponseResult;
 import rushb.webapp.model.Tag;
 import rushb.webapp.service.BlogService;
 
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,19 @@ public class BlogController {
                 "Get the list of all blogs",
                 blogList
         ));
+    }
+
+    @PutMapping("api/blogViewPlusOne/id/{blogId}")
+    public ResponseEntity<ResponseResult<String>> blogViewPlusOne(@PathVariable String blogId){
+        blogService.blogViewPlusOne(blogId);
+        return ResponseEntity.ok(new ResponseResult<String>(
+                new Date(),
+                true,
+                "Blog views plus one",
+                "Blog: "+blogId+" views plus one",
+                null
+        ));
+
     }
 
     @ApiOperation(
@@ -199,6 +213,8 @@ public class BlogController {
                 blog
         ));
     }
+
+
 
 
 }
