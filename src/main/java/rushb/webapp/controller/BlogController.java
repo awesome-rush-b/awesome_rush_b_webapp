@@ -48,7 +48,7 @@ public class BlogController {
     @ApiOperation(
             value = "add one count for a particular blog by blogId",
             produces = "application/json")
-    @PutMapping("api/blogViewPlusOne/id/{blogId}")
+    @PutMapping("api/blog/blogViewPlusOne/id/{blogId}")
     public ResponseEntity<ResponseResult<String>> blogViewPlusOne(@PathVariable String blogId){
         blogService.blogViewPlusOne(blogId);
         return ResponseEntity.ok(new ResponseResult<String>(
