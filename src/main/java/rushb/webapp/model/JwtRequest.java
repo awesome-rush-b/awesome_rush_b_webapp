@@ -1,6 +1,8 @@
 package rushb.webapp.model;
 
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
@@ -8,8 +10,11 @@ import java.io.Serializable;
 public class JwtRequest implements Serializable {
     private static final long serialVersionUID = 5926468583005150707L;
 
+    @ApiModelProperty(required = true)
     @NotBlank(message = "Username should not be blank!")
     private String username;
+
+    @ApiModelProperty(required = true)
     @NotBlank(message = "Password should not be blank!")
     private String password;
 
